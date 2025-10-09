@@ -12,7 +12,11 @@ from prophet import Prophet
 # -------------------------------
 # Database Connection
 # -------------------------------
-engine = create_engine('postgresql://postgres:Nishant%40123@localhost:5432/stock_crypto_db')
+# engine = create_engine('postgresql://postgres:Nishant%123@db.assqzmgjfkgqdohrpahj.supabase.co:5432/postgres')
+
+# engine=create_engine('postgresql://postgres:[Nishant%407879692581]@db.szcndefhegrwzhuzgozm.supabase.co:5432/postgres')
+
+engine=create_engine('postgresql://postgres.szcndefhegrwzhuzgozm:Nishant%407879692581@aws-1-ap-south-1.pooler.supabase.com:5432/postgres')
 
 st.set_page_config(page_title="Live Stock & Crypto Dashboard", layout="wide")
 st.title("📈 Live Stock & Crypto Dashboard with Forecast & Portfolio Simulation")

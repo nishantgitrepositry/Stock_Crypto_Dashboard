@@ -3,3 +3,4 @@ pandas
 plotly
 SQLAlchemy
 prophet
+psycopg2-binary

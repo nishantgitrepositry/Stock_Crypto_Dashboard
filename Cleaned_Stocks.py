@@ -4,11 +4,13 @@ import sqlalchemy
 from sqlalchemy import text
 from datetime import datetime
 from scipy import stats
+from sqlalchemy import create_engine, text
+from datetime import datetime, timedelta, time
 
 # -----------------------------
 # 1. Database Connection
 # -----------------------------
-engine = sqlalchemy.create_engine("postgresql://postgres:Nishant%40123@localhost:5432/stock_crypto_db")
+engine = create_engine('postgresql://postgres.szcndefhegrwzhuzgozm:Nishant%407879692581@aws-1-ap-south-1.pooler.supabase.com:5432/postgres') 
 
 # -----------------------------
 # 2. Fetch Raw Data (STOCK)

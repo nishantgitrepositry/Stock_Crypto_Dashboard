@@ -14,9 +14,7 @@ from sqlalchemy import create_engine
 # ---------------------------
 # 1. Database Connection
 # ---------------------------
-engine = sqlalchemy.create_engine(
-    "postgresql+psycopg2://postgres:Nishant%40123@localhost:5432/stock_crypto_db"
-)
+engine=create_engine('postgresql://postgres.szcndefhegrwzhuzgozm:Nishant%407879692581@aws-1-ap-south-1.pooler.supabase.com:5432/postgres')  
 
 # ---------------------------
 # Step 1: Fetch raw data (dummy placeholder)
@@ -126,15 +124,17 @@ def fetch_raw_data():
     print("📥 Fetching raw data for Stocks & Crypto...")
 
     # Stocks
-    stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NFLX", "NVDA"]
+    stock_list = ["AAPL","MSFT","GOOGL","AMZN","META","TSLA","NVDA","AMD","INTC","IBM","ORCL",
+    "CRM","NFLX","ADBE","CSCO","PYPL","SHOP","JPM","BAC","WFC","GS","MS","USB","SCHW","XOM","CVX","BP","COP","SLB","HAL","PFE","JNJ","MRK","ABBV","LLY","UNH","MDT","F","GM","RIVN"]
     for s in stock_list:
         try:
             update_stock(s)
-        except Exception as e:
+        except Exception as e:   
             print(f"❌ [Stock-{s}] error: {e}")
 
     # Crypto
-    crypto_list = ["BTC"]
+    crypto_list = ["BTC", "ETH", "BNB", "SOL", "XRP", "ADA", "DOGE",
+    "DOT", "TRX", "AVAX", "MATIC", "LTC", "BCH", "XLM", "LINK"]
     for c in crypto_list:
         try:
             update_crypto(c)

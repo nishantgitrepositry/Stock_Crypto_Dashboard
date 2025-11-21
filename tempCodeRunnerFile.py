@@ -1,0 +1,2 @@
+"AAPL","MSFT","GOOGL","AMZN","META","TSLA","NVDA","AMD","INTC","IBM","ORCL",
+    "CRM","NFLX","ADBE","CSCO","PYPL","SHOP","JPM","BAC","WFC","GS","MS","USB","SCHW","XOM","CVX","BP","COP","SLB","HAL","PFE","JNJ","MRK","ABBV","LLY","UNH","MDT","F","GM","RIVN"

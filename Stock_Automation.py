@@ -5,8 +5,12 @@ from sqlalchemy import create_engine, text
 from datetime import datetime, timedelta
 
 # ---------- CONFIG ----------
-ENGINE_STR = "postgresql://postgres:Nishant%40123@localhost:5432/stock_crypto_db"
-engine = create_engine(ENGINE_STR)
+engine=create_engine('postgresql://postgres.szcndefhegrwzhuzgozm:Nishant%407879692581@aws-1-ap-south-1.pooler.supabase.com:5432/postgres')
+
+# FLATTEN ALL LISTS INTO ONE LIST
+stock_list = [
+    "AAPL","MSFT","GOOGL","AMZN","META","TSLA","NVDA","AMD","INTC","IBM","ORCL",
+    "CRM","NFLX","ADBE","CSCO","PYPL","SHOP","JPM","BAC","WFC","GS","MS","USB","SCHW","XOM","CVX","BP","COP","SLB","HAL","PFE","JNJ","MRK","ABBV","LLY","UNH","MDT","F","GM","RIVN"]
 
 # ---------- helpers ----------
 def _normalize_yf_df(df, symbol):
@@ -58,7 +62,7 @@ def update_stock(symbol):
         print(f"[{symbol}] no rows fetched.")
         return
 
-    # ✅ Insert with ON CONFLICT
+    # Insert with ON CONFLICT
     insert_query = """
     INSERT INTO stocks (symbol, date, open, high, low, close, volume)
     VALUES (:symbol, :date, :open, :high, :low, :close, :volume)
@@ -76,12 +80,10 @@ def update_stock(symbol):
 
     print(f"[{symbol}] upserted {len(df)} rows.")
 
-# ---------- run for a list ----------
+# ---------- Runner ----------
 if __name__ == "__main__":
-    stock_list = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NFLX", "NVDA"]
     for s in stock_list:
         try:
             update_stock(s)
         except Exception as e:
             print(f"[{s}] error:", e)
- 

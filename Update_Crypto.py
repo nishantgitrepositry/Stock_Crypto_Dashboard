@@ -1,14 +1,20 @@
 import requests
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
+from datetime import datetime, time
 
-engine = create_engine('postgresql://postgres:Nishant%40123@localhost:5432/stock_crypto_db')
+# PostgreSQL Connection
+engine=create_engine('postgresql://postgres.szcndefhegrwzhuzgozm:Nishant%407879692581@aws-1-ap-south-1.pooler.supabase.com:5432/postgres')
 
+# -----------------------------
+# Function: Fetch Crypto Data
+# -----------------------------
 def fetch_crypto(symbol="BTC", currency="USD", limit=2000, to_ts=None):
     url = "https://min-api.cryptocompare.com/data/v2/histoday"
     params = {"fsym": symbol, "tsym": currency, "limit": limit}
     if to_ts:
         params["toTs"] = to_ts
+
     r = requests.get(url, params=params)
     data = r.json()["Data"]["Data"]
 
@@ -23,38 +29,40 @@ def fetch_crypto(symbol="BTC", currency="USD", limit=2000, to_ts=None):
 
     return df[["symbol", "date", "open", "high", "low", "close", "volume_crypto", "volume_usd"]]
 
-# Step 1: Check last saved date in DB
 
-from sqlalchemy import text
-
-with engine.connect() as conn:
-    result = conn.execute(text("SELECT MAX(date) FROM crypto WHERE symbol='BTC'"))
-    last_date = result.scalar()
-
-
-# Step 2: Fetch only new data
-
-from datetime import datetime, time
-
-if last_date:
-    # Convert last_date (date) -> datetime
-    last_datetime = datetime.combine(last_date, time.min)
-    last_timestamp = int(last_datetime.timestamp())
-
-    # Fetch till current time
-    crypto_df = fetch_crypto("BTC", to_ts=int(datetime.now().timestamp()))
-
-    # Only new rows
-    crypto_df = crypto_df[crypto_df["date"] > last_datetime]
-else:
-    # If no data in DB, fetch full history
-    crypto_df = fetch_crypto("BTC")
+# -----------------------------------------
+# Crypto List (You can add more here)
+# -----------------------------------------
+crypto_list = [
+    "BTC", "ETH", "BNB", "SOL", "XRP", "ADA", "DOGE",
+    "DOT", "TRX", "AVAX", "MATIC", "LTC", "BCH", "XLM", "LINK"
+]
 
 
-# ✅ Step 3: Save only new rows
+# -----------------------------------------
+# Loop through each crypto and update DB
+# -----------------------------------------
+for symbol in crypto_list:
+    print(f"\n⏳ Fetching new data for {symbol}...")
 
-if not crypto_df.empty:
-    crypto_df.to_sql("crypto", engine, if_exists="append", index=False)
-    print(f"Inserted {len(crypto_df)} new rows.")
-else:
-    print("No new data to insert.")
+    # Step 1: Check last saved date
+    with engine.connect() as conn:
+        result = conn.execute(text(f"SELECT MAX(date) FROM crypto WHERE symbol='{symbol}'"))
+        last_date = result.scalar()
+
+    # Step 2: Fetch only new data
+    if last_date:
+        last_datetime = datetime.combine(last_date, time.min)
+        last_timestamp = int(last_datetime.timestamp())
+
+        df = fetch_crypto(symbol, to_ts=int(datetime.now().timestamp()))
+        df = df[df["date"] > last_datetime]
+    else:
+        df = fetch_crypto(symbol)
+
+    # Step 3: Insert new rows
+    if not df.empty:
+        df.to_sql("crypto", engine, if_exists="append", index=False)
+        print(f"✅ Inserted {len(df)} new rows for {symbol}.")
+    else:
+        print(f"✔ {symbol} is already up to date.")

@@ -68,12 +68,14 @@ else:
 # -------------------------------
 asset_type = st.sidebar.selectbox("Select Asset Type", ["Stock", "Crypto"])
 
-stocks_list = ["AAPL", "AMZN", "GOOGLE", "META", "MSFT", "NFLX"]
+stocks_list = ["AAPL","MSFT","GOOGL","AMZN","META","TSLA","NVDA","AMD","INTC","IBM","ORCL",
+    "CRM","NFLX","ADBE","CSCO","PYPL","SHOP","JPM","BAC","WFC","GS","MS","USB","SCHW","XOM","CVX","BP","COP","SLB","HAL","PFE","JNJ","MRK","ABBV","LLY","UNH","MDT","F","GM","RIVN"]
 
 if asset_type == "Stock":
     selected_stocks = st.sidebar.multiselect("Select Stocks", stocks_list, default=["AAPL"])
 else:
-    crypto_list = ["BTC"]  # column is 'symbol' in crypto table
+    crypto_list = ["BTC", "ETH", "BNB", "SOL", "XRP", "ADA", "DOGE",
+    "DOT", "TRX", "AVAX", "MATIC", "LTC", "BCH", "XLM", "LINK"]  # column is 'symbol' in crypto table
     selected_crypto = st.sidebar.selectbox("Select Crypto Coin", crypto_list, index=0)
 
 forecast_days = st.sidebar.slider("Forecast Days", min_value=7, max_value=30, value=7)
@@ -84,7 +86,7 @@ invest_amount = st.sidebar.number_input("Portfolio Investment Amount per Asset (
 # Fetch Data from PostgreSQL
 # -------------------------------
 def get_stock_data(symbol):
-    query = f"SELECT * FROM cleaned_stock_data WHERE symbol='{symbol}' ORDER BY date ASC"
+    query = f"SELECT * FROM cleaned_stocks_data WHERE symbol='{symbol}' ORDER BY date ASC"
     df = pd.read_sql(query, engine)
     return df
 

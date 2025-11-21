@@ -6,9 +6,7 @@ from sqlalchemy import create_engine
 # ---------------------------
 # 1. Database Connection
 # ---------------------------
-engine = sqlalchemy.create_engine(
-    "postgresql+psycopg2://postgres:Nishant%40123@localhost:5432/stock_crypto_db"
-)
+engine=create_engine('postgresql://postgres.szcndefhegrwzhuzgozm:Nishant%407879692581@aws-1-ap-south-1.pooler.supabase.com:5432/postgres')
 
 # ---------------------------
 # 2. Helper Function for Metrics
